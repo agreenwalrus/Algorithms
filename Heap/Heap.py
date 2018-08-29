@@ -17,7 +17,7 @@ class MinHeap:
             child_index = self.size - 1
             parent_index = (child_index - 1) >> 1
             if self.size > 1:
-                while self.memory[parent_index] > self.memory[child_index]:
+                while parent_index >= 0 and self.memory[parent_index] > self.memory[child_index]:
                     l_chld_ind = (parent_index << 1) + 1
                     r_chld_ind = l_chld_ind + 1
                     min_child_index = \
@@ -27,7 +27,7 @@ class MinHeap:
                     self.memory[min_child_index], self.memory[parent_index] = \
                         self.memory[parent_index], self.memory[min_child_index]
                     child_index = parent_index
-                    parent_index = child_index >> 1
+                    parent_index = (child_index - 1) >> 1
 
         if self.size < self.max_amount_of_elements:
             self.memory[self.size] = (priority, element)
@@ -46,11 +46,15 @@ class MinHeap:
         while parent_index != last_el_ind:
             l_chld_ind = (parent_index << 1) + 1
             r_chld_ind = l_chld_ind + 1
-            if r_chld_ind <= self.size:
-                if self.memory[l_chld_ind] <= self.memory[r_chld_ind] and self.memory[l_chld_ind] < self.memory[last_el_ind]:
-                    min_child_index = l_chld_ind
-                elif self.memory[r_chld_ind] < self.memory[l_chld_ind] and self.memory[r_chld_ind] < self.memory[last_el_ind]:
-                    min_child_index = r_chld_ind
+
+            if r_chld_ind <= self.size \
+                    and self.memory[l_chld_ind] <= self.memory[r_chld_ind] \
+                    and self.memory[l_chld_ind] < self.memory[last_el_ind]:
+                min_child_index = l_chld_ind
+            elif r_chld_ind <= self.size \
+                and self.memory[r_chld_ind] < self.memory[l_chld_ind] \
+                and self.memory[r_chld_ind] < self.memory[last_el_ind]:
+                min_child_index = r_chld_ind
             else:
                 min_child_index = last_el_ind
 
